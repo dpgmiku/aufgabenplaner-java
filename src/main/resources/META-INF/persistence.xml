@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!-- Typical JPA Persistence Unit declaration with Hibernate on Java SE, Knabe 2015-11-02: -->
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+  version="1.0">
+	<persistence-unit name="aufgabenplaner" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<properties>
+        	<!-- SQL dialect -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+			
+        	<!-- 2015-11-05 Deactivated database connection settings in Hibernate specific properties: 
+			<property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>			
+			<property name="hibernate.connection.username" value=""/>
+			<property name="hibernate.connection.password" value=""/>
+			<property name="hibernate.connection.url" value="jdbc:derby:memory:aufgabe-DB;create=true"/>
+        	-->
+        	<!-- Database connection settings in standardized JPA 2 properties: -->
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>			
+			<property name="javax.persistence.jdbc.user" value=""/>
+			<property name="javax.persistence.jdbc.password" value=""/>
+			<!-- Derby connection URL. See https://db.apache.org/derby/docs/10.7/devguide/cdevdvlp17453.html -->
+			<!-- Use this URL for Derby in embedded mode. It runs in the same JVM as the main program. You don't have to start it. 
+			  Uses memory as storage media.
+			-->
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:aufgabe-DB;create=true"/>
+			<!-- Use this URL for Derby in embedded mode with storage in directory aufgabe-DB in current working directory. 
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:directory:aufgabe-DB;create=true"/>
+			-->
+			
+	        <!-- JDBC connection pool (use the built-in) -->
+            <property name="hibernate.connection.pool_size" value="1"/>
+            <!-- Will report WARN: HHH000144: hibernate.connection.autocommit = false breaks the EJB3 specification,
+              but nevertheless seems appropriate for us, because we run outside of an EJB container. Knabe 15-10-02
+            -->
+            <property name="hibernate.connection.autocommit" value="false"/>
+			<property name="hibernate.max_fetch_depth" value="3"/>
+	        <!-- Nur bei batch_size 0 wird die Ursachenausnahme eines Batch-Versagens (z.B. eine constraint violation) gemeldet: -->
+	        <property name="hibernate.jdbc.batch_size" value="0"/>
+	        <!-- Enable Hibernate's automatic session context management -->
+	        <property name="hibernate.current_session_context_class" value="thread"/>
+	        <!-- Disable the second-level cache  -->
+	        <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+	
+	        <!-- Echo all executed SQL to stdout -->
+	        <property name="hibernate.show_sql" value="true"/>
+	
+	        <!-- Update the database schema on startup. If the database is created in memory, this always results in a new schema creation. -->
+	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	
+			<!-- By default all properly annotated classes and all hbm.xml files found inside the archive are added to the persistence unit configuration.
+			  See http://docs.jboss.org/hibernate/stable/entitymanager/reference/en/html/configuration.html
+			  So we do not need to select mappable classes by <class>tld.vendor.project.package.ClassName</class> here.
+			-->
+			
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,10 @@
+Persistence.ser
+target/
+aufgabe-DB/
+.settings/
+.idea/
+/*.iml
+.classpath
+.project
+derby.log
+*.*~

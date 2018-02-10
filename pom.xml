@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+ 
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.bht-berlin.knabe</groupId>
+  <artifactId>aufgabenplaner</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Aufgabenplaner</name>
+  <!-- All versions promoted to current version on 2014-04-04 -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+    <!-- For configuring Java version -->
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <multexVersion>8.3</multexVersion>
+    <messageResourceFile>MessageResources.properties</messageResourceFile>
+  </properties>
+ 
+  <dependencies>
+    <!-- Die Hibernate-Implementierung des JPA-EntityManagers: -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+	  <version>
+          5.1.0.Final
+      </version>
+    </dependency>
+    <!-- Die Java-Datenbank Derby: -->
+	<dependency>
+	  <groupId>org.apache.derby</groupId>
+	  <artifactId>derby</artifactId>
+	  <version>10.7.1.1</version>
+	</dependency>
+    <!-- Multi Tier Exception Handling Framework -->
+    <dependency>
+      <groupId>de.tfh-berlin.knabe</groupId>
+      <artifactId>multex</artifactId>
+      <version>${multexVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.11</version>
+          <scope>test</scope>
+      </dependency>
+
+
+  </dependencies>
+ 
+  <build>
+    <pluginManagement>
+        <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+            <plugin>
+                <groupId>org.eclipse.m2e</groupId>
+                <artifactId>lifecycle-mapping</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <lifecycleMappingMetadata>
+                        <pluginExecutions>
+                            <pluginExecution>
+                                <pluginExecutionFilter>
+                                    <groupId>
+                                        org.apache.maven.plugins
+                                    </groupId>
+                                    <artifactId>
+                                        maven-javadoc-plugin
+                                    </artifactId>
+                                    <versionRange>
+                                        [2.9.1,)
+                                    </versionRange>
+                                    <goals>
+                                        <goal>javadoc</goal>
+                                    </goals>
+                                </pluginExecutionFilter>
+                                <action>
+                                    <ignore></ignore>
+                                </action>
+                            </pluginExecution>
+                        </pluginExecutions>
+                    </lifecycleMappingMetadata>
+                </configuration>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.source}</target>
+        </configuration>
+      </plugin>  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <configuration>
+          <!-- Default configuration for all reports -->
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>javadoc</goal>
+            </goals>
+            <phase>process-classes</phase>
+            <configuration>
+              <!-- Specific configuration for the messages report -->
+              <doclet>multex.tool.ExceptionMessagesDoclet</doclet>
+              <docletArtifact>
+                <groupId>de.tfh-berlin.knabe</groupId>
+                <artifactId>multex</artifactId>
+                <version>${multexVersion}</version>
+              </docletArtifact>
+              <useStandardDocletOptions>false</useStandardDocletOptions>
+              <show>private</show>
+              <verbose>false</verbose>
+              <debug>false</debug>
+              <additionalparam>
+                    -out ${project.build.directory}/classes/${messageResourceFile}
+              </additionalparam>
+              <!-- For the project-reports page-->
+              <name>ExceptionTexts</name>
+              <description>Extraction of Exception Message Texts from Source Code</description>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.1</version>
+        <executions>
+          <execution>
+        	  <!-- <phase>test</phase> -->
+        	  <goals><goal>java</goal></goals>
+          </execution>
+        </executions>
+        <!-- Starte den Aufgabenplaner mit:   mvn exec:java -->
+        <configuration>
+          <mainClass>l1_ui.UiAufgabenplaner</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <!-- For current MulTEx: -->
+      <id>bht-knabe-repository</id>
+      <name>BHT Knabe Maven 2 repository</name>
+      <url>http://public.beuth-hochschule.de/~knabe/mvn-repo/</url>
+    </repository>
+  </repositories>
+ 
+</project>
